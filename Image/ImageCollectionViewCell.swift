@@ -41,14 +41,13 @@ class ImageCollectionViewCell: UICollectionViewCell {
         let imageWidth = image?.size.width
         let imageHeight = image?.size.height
         let multipl = imageWidth! / imageHeight!
-        print(multipl)
         newsImageView.image = image
         newsTextLabel.text = "Image"
         newsImageView.sizeToFit()
-        print(contentView.frame)
+
         print(newsImageView.sizeThatFits(CGSize(width: contentView.bounds.width - 40, height: 10000)))
         newsImageView.frame = CGRect(x: 20, y: 20, width: contentView.bounds.width - 40, height: (contentView.bounds.width - 40)/multipl)
-        print(newsImageView.frame)
+        
         newsImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         newsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
         newsImageView.bottomAnchor.constraint(equalTo: newsTextLabel.bottomAnchor, constant: -20).isActive = true

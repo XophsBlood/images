@@ -18,7 +18,8 @@ class NavigationBarViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
       super.viewWillLayoutSubviews()
-      navigationBar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 90)
+        navigationBar.frame = CGRect(x: 0, y: 0, width: (view.superview?.bounds.width)!, height: 90)
+      print(view.bounds.width)
       if firstTime {
         firstTime = false
         enableConstraintsForWidth(traitCollection.horizontalSizeClass)
