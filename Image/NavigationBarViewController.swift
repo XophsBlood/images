@@ -18,8 +18,6 @@ class NavigationBarViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
       super.viewWillLayoutSubviews()
-        navigationBar.frame = CGRect(x: 0, y: 0, width: (view.superview?.bounds.width)!, height: 90)
-      print(view.bounds.width)
       if firstTime {
         firstTime = false
         enableConstraintsForWidth(traitCollection.horizontalSizeClass)
@@ -68,11 +66,11 @@ class NavigationBarViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        createAndSetupNavigationBar()
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func createAndSetupNavigationBar() {
-        navigationBar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 90)
+        
         navigationBar.isUserInteractionEnabled = true
         navigationBar.backgroundColor = .brown
         view.addSubview(navigationBar)
@@ -84,23 +82,34 @@ class NavigationBarViewController: UIViewController {
         
         compactConstraints.append(navigationBar.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0))
         compactConstraints.append(navigationBar.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 0))
+        compactConstraints.append(navigationBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 0))
+        compactConstraints.append(navigationBar.heightAnchor.constraint(equalToConstant: 90))
         compactConstraints.append(moreButton.rightAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.rightAnchor, constant: -20))
-        compactConstraints.append(moreButton.bottomAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.bottomAnchor, constant: -20))
-        compactConstraints.append(moreButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 20))
-        compactConstraints.append(shareButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 20))
-        compactConstraints.append(shareButton.bottomAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.bottomAnchor, constant: -20))
+        compactConstraints.append(moreButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 0))
+        compactConstraints.append(shareButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 0))
         compactConstraints.append(shareButton.rightAnchor.constraint(equalTo: moreButton.rightAnchor, constant: -20))
         
+        
+        regularConstraints.append(navigationBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0))
+        regularConstraints.append(navigationBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0))
+        regularConstraints.append(navigationBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 0))
+        regularConstraints.append(navigationBar.heightAnchor.constraint(equalToConstant: 90))
+        
         regularConstraints.append(filterButton.rightAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.rightAnchor, constant: -20))
-        regularConstraints.append(filterButton.bottomAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.bottomAnchor, constant: -20))
-        regularConstraints.append(filterButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 20))
+        regularConstraints.append(filterButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 0))
         regularConstraints.append(sortButton.rightAnchor.constraint(equalTo: filterButton.rightAnchor, constant: -20))
-        regularConstraints.append(sortButton.bottomAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.bottomAnchor, constant: -20))
-        regularConstraints.append(sortButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 20))
+        regularConstraints.append(sortButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 0))
         regularConstraints.append(shareButton.rightAnchor.constraint(equalTo: sortButton.rightAnchor, constant: -20))
-        regularConstraints.append(shareButton.bottomAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.bottomAnchor, constant: -20))
-        regularConstraints.append(shareButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 20))
+        
+        regularConstraints.append(shareButton.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 0))
+        
+        navigationBar.updateConstraints()
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        createAndSetupNavigationBar()
     }
     
     private func enableConstraintsForWidth(_ horizontalSizeClass: UIUserInterfaceSizeClass) {

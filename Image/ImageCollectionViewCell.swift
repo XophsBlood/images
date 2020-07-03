@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class ImageCollectionViewCell: UICollectionViewCell {
    
     let newsTextLabel: UILabel = {
@@ -27,37 +28,32 @@ class ImageCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
-    override func layoutSubviews() {
-        backgroundColor = .yellow
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         configure()
+        backgroundColor = .yellow
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     
     func configure() {
         addSubview(newsTextLabel)
         addSubview(newsImageView)
-        let image = UIImage(named: "interface")
-        let imageWidth = image?.size.width
-        let imageHeight = image?.size.height
-        let multipl = imageWidth! / imageHeight!
-        newsImageView.image = image
+//        let image = UIImage(named: "interface")
+//        newsImageView.image = image
         newsTextLabel.text = "Image"
+        
         newsImageView.sizeToFit()
-
-        print(newsImageView.sizeThatFits(CGSize(width: contentView.bounds.width - 40, height: 10000)))
-        newsImageView.frame = CGRect(x: 20, y: 20, width: contentView.bounds.width - 40, height: (contentView.bounds.width - 40)/multipl)
-        
-        newsImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
-        newsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
-        newsImageView.bottomAnchor.constraint(equalTo: newsTextLabel.bottomAnchor, constant: -20).isActive = true
-        newsImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
-        
         
         newsTextLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         newsTextLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
         
-        
-       
+        newsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
+        newsImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        newsImageView.bottomAnchor.constraint(equalTo: newsTextLabel.bottomAnchor, constant: -20).isActive = true
+        newsImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true   
     }
 }

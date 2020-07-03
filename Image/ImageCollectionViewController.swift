@@ -7,92 +7,105 @@
 //
 
 import UIKit
+import CoreLogic
 
 private let reuseIdentifier = "Cell"
 
-class ImageCollectionViewController: UICollectionViewController {
+protocol ImageListView {
+    func display(images: [MyPicture])
+}
 
+class ImageCollectionViewController: UICollectionViewController {
+    
+    var imageViewControllerDelegate: ImageViewControllerDelegate?
+    
+    var images: [MyPicture] = []
+    var imagesData: [Int: Data] = [:]
+    var currentPages: Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        // Do any additional setup after loading the view.
+        currentPages = 0
+        imagesData = [:]
+
+        imageViewControllerDelegate?.fetchImages()
+
+        self.collectionView!.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView.contentInsetAdjustmentBehavior = .never
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 20
+        return images.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        // Configure the cell
-    
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ImageCollectionViewCell
+        cell.newsImageView.activityIndicator.startAnimating()
+        cell.newsImageView.downloadImageData(url: images[indexPath.row].croppedPictrure)
+        cell.newsTextLabel.text = images[indexPath.row].id
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == (images.count - 1) {
+            imageViewControllerDelegate?.nextFetch()
+        }
     }
-    */
-
 }
 
 
 extension ImageCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if traitCollection.horizontalSizeClass == .regular {
-            return CGSize(width: view.bounds.width/2.05, height: view.bounds.width/2.05)
+            return CGSize(width: collectionView.bounds.width/2.05 - collectionView.contentInset.left - collectionView.contentInset.right - 1, height: collectionView.bounds.width/2.05)
         }
-        return CGSize(width: view.bounds.width, height: view.bounds.width)
+        return CGSize(width: collectionView.bounds.width - collectionView.contentInset.left - collectionView.contentInset.right - 1, height: collectionView.bounds.width)
+    }
+}
+
+extension ImageCollectionViewController: ImageListView {
+    func display(images: [MyPicture]) {
+        self.images = images
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+}
+
+extension UIImageView {
+    fileprivate var activityIndicator: UIActivityIndicatorView {
+      get {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.center = CGPoint(x:self.frame.width/2,
+                                       y: self.frame.height/2)
+        activityIndicator.stopAnimating()
+        self.addSubview(activityIndicator)
+        return activityIndicator
+      }
+    }
+    
+    func downloadImageData(url: String) {
+        let session = URLSession(configuration: .default)
+        let networkManager = NetworkManager(session: session)
+        let imageDataLoader = HTTPImageDataLoader(httpCLient: networkManager)
+        let url = URL(string: "\(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)")!
+        imageDataLoader.getImageData(with: url) { result in
+            switch result {
+            case let .success(data):
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                    self.image = UIImage(data: data)
+                }
+            case let .failure(error):
+                print(error)
+            }
+            
+        }
     }
 }
