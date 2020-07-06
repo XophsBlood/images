@@ -23,6 +23,8 @@
 		082C9C5D24ADF29100EFE33C /* CoreLogic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 082C9C5C24ADF29100EFE33C /* CoreLogic.framework */; };
 		082C9C5F24AF381900EFE33C /* ImageFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C5E24AF381900EFE33C /* ImageFetcher.swift */; };
 		082C9C6124AF3B9800EFE33C /* ImageUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C6024AF3B9800EFE33C /* ImageUIComposer.swift */; };
+		082C9C6324B30C7300EFE33C /* CustomFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C6224B30C7300EFE33C /* CustomFooterView.swift */; };
+		082C9C6524B30D5600EFE33C /* CustomFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 082C9C6424B30D5600EFE33C /* CustomFooterView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		082C9C5C24ADF29100EFE33C /* CoreLogic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreLogic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		082C9C5E24AF381900EFE33C /* ImageFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFetcher.swift; sourceTree = "<group>"; };
 		082C9C6024AF3B9800EFE33C /* ImageUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUIComposer.swift; sourceTree = "<group>"; };
+		082C9C6224B30C7300EFE33C /* CustomFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFooterView.swift; sourceTree = "<group>"; };
+		082C9C6424B30D5600EFE33C /* CustomFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFooterView.xib; sourceTree = "<group>"; };
 		08999E6024ADF0BC007188F9 /* CoreLogic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreLogic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,6 +93,8 @@
 				082C9C5E24AF381900EFE33C /* ImageFetcher.swift */,
 				082C9C6024AF3B9800EFE33C /* ImageUIComposer.swift */,
 				0800992824A0D03900B482DB /* NavigationBarViewController.swift */,
+				082C9C6224B30C7300EFE33C /* CustomFooterView.swift */,
+				082C9C6424B30D5600EFE33C /* CustomFooterView.xib */,
 				0800992924A0D03900B482DB /* NavigationBarViewController.xib */,
 				0800991624A0C6EC00B482DB /* Main.storyboard */,
 				0800991924A0C6ED00B482DB /* Assets.xcassets */,
@@ -178,6 +184,7 @@
 				0800993624A209D600B482DB /* MoreTableViewCell.xib in Resources */,
 				0800991D24A0C6ED00B482DB /* LaunchScreen.storyboard in Resources */,
 				0800991A24A0C6ED00B482DB /* Assets.xcassets in Resources */,
+				082C9C6524B30D5600EFE33C /* CustomFooterView.xib in Resources */,
 				0800991824A0C6EC00B482DB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,6 +204,7 @@
 				0800993124A2025C00B482DB /* MoreTableViewController.swift in Sources */,
 				0800991524A0C6EC00B482DB /* ViewController.swift in Sources */,
 				0800991124A0C6EC00B482DB /* AppDelegate.swift in Sources */,
+				082C9C6324B30C7300EFE33C /* CustomFooterView.swift in Sources */,
 				0800991324A0C6EC00B482DB /* SceneDelegate.swift in Sources */,
 				082C9C6124AF3B9800EFE33C /* ImageUIComposer.swift in Sources */,
 			);

@@ -40,7 +40,7 @@ class ImageFetcher: ImageViewControllerDelegate {
         }
     }
     
-    func nextFetch() {
+    @objc func nextFetch() {
         pageCount += 1
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
         urlComponents?.queryItems = [URLQueryItem(name: "page", value: "\(pageCount)")]
@@ -48,7 +48,6 @@ class ImageFetcher: ImageViewControllerDelegate {
             switch result {
             case let .success(imagesResult):
                 self.images.append(contentsOf: imagesResult.pictures)
-                print(imagesResult.pictures)
                 self.imageListView.display(images: self.images)
             case let .failure(error):
                 print(error)

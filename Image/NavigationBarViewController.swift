@@ -72,7 +72,7 @@ class NavigationBarViewController: UIViewController {
     func createAndSetupNavigationBar() {
         
         navigationBar.isUserInteractionEnabled = true
-        navigationBar.backgroundColor = .brown
+        navigationBar.backgroundColor = UIColor(cgColor: CGColor(srgbRed: 0, green: 0, blue: 139, alpha: 1))
         view.addSubview(navigationBar)
         navigationBar.addSubview(shareButton)
         shareButton.addTarget(self, action: #selector(share(_:)), for: .touchUpInside)
