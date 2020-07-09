@@ -20,6 +20,7 @@ class ImageCollectionViewController: UICollectionViewController {
     var imageViewControllerDelegate: ImageViewControllerDelegate?
     var footerView:CustomFooterView?
     
+    
     var controllers: [CellImageViewController] = [] {
         didSet {
             collectionView.reloadData()

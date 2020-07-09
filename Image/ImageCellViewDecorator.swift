@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreLogic
 
 class MainQueueDecorator<View> {
     
@@ -31,5 +32,20 @@ extension MainQueueDecorator: ImageCellView where View:ImageCellView, View.Image
     }
 }
 
+extension MainQueueDecorator: ImageDataLoader where View == ImageDataLoader {
+    func getImageData(with url: URL, completion: @escaping (Result<Data, Error>) -> ()) -> URLSessionDataTaskProtocol {
+        let complition: (Result<Data, Error>) -> () = { result in
+            guard Thread.isMainThread else {
+                return DispatchQueue.main.async {
+                    completion(result)
+                }
+            }
+            
+            completion(result)
+        }
+        
+        return imageCellView.getImageData(with: url, completion: complition)
+    }
+}
 
 

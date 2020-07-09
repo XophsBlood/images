@@ -10,12 +10,12 @@ import Foundation
 import CoreLogic
 import UIKit
 
-class ImageResultToControllerAdapter<Image, View: ImageCellView>: ImageListView where Image == View.Image, View.Image: UIImage {
+class ImageResultToControllerAdapter<Image>: ImageListView {
     let imageDataLoader: ImageDataLoader
     let viewController: ViewController
-    let closure: (Data) -> Image
+    let closure: (Data) -> UIImage
     
-    init(imageDataLoader: ImageDataLoader, viewController: ViewController, closure: @escaping (Data) -> Image) {
+    init(imageDataLoader: ImageDataLoader, viewController: ViewController, closure: @escaping (Data) -> UIImage) {
         self.imageDataLoader = imageDataLoader
         self.viewController = viewController
         self.closure = closure
@@ -25,9 +25,10 @@ class ImageResultToControllerAdapter<Image, View: ImageCellView>: ImageListView 
         let controllers: [CellImageViewController] = images.map {
             let proxy = WeakProxy<CellImageViewController>()
             let mainQueueProxy = MainQueueDecorator(imageCellView: proxy)
-            let imageDataDownloader = ImageViewPresenter(dataLoader: imageDataLoader, myPicture: $0, imageCellView: mainQueueProxy, closure: closure)
-            let mainQueueDecorator = MainQueueDecorator(imageCellView: imageDataDownloader)
-            let cell = CellImageViewController(myPicture: $0, imageDataDownloader: mainQueueDecorator)
+            let mainQueueLoader = MainQueueDecorator(imageCellView: imageDataLoader)
+            let imageDataDownloader = ImageViewModel<UIImage>(dataLoader: mainQueueLoader, myPicture: $0, closure: closure)
+    
+            let cell = CellImageViewController(imageViewModel: imageDataDownloader)
             proxy.object = cell
             
             return cell

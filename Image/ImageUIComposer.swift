@@ -15,7 +15,7 @@ class ImageUIComposer {
         let imageViewController = ImageCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
         let viewController = storyBoard.instantiateInitialViewController() as! ViewController
-        let imageAdapter = ImageResultToControllerAdapter<UIImage, CellImageViewController> (imageDataLoader: imageDataLoader, viewController: viewController) { data in
+        let imageAdapter = ImageResultToControllerAdapter<UIImage> (imageDataLoader: imageDataLoader, viewController: viewController) { data in
             UIImage(data: data)!
         }
         let decorator = ImageListViewDecorator(imageListView: imageAdapter)
