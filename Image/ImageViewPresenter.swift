@@ -17,12 +17,12 @@ protocol ImageDataDownloader {
 class ImageViewPresenter<Image, View: ImageCellView>: ImageDataDownloader where Image == View.Image {
     
     let dataLoader: ImageDataLoader
-    let myPicture: MyPicture
+    let myPicture: ImagePictureModel
     let imageCellView: View
     var dataTask: URLSessionDataTaskProtocol?
     let closure: (Data) -> Image
     
-    internal init(dataLoader: ImageDataLoader, myPicture: MyPicture, imageCellView: View, closure: @escaping (Data) -> Image) {
+    internal init(dataLoader: ImageDataLoader, myPicture: ImagePictureModel, imageCellView: View, closure: @escaping (Data) -> Image) {
         self.dataLoader = dataLoader
         self.myPicture = myPicture
         self.imageCellView = imageCellView
@@ -32,7 +32,7 @@ class ImageViewPresenter<Image, View: ImageCellView>: ImageDataDownloader where 
     func didStartDownloading() {
         let imageViewModel = CellImageViewModel<Image>(image: nil, text: self.myPicture.id, isLoading: true)
         imageCellView.display(model: imageViewModel)
-        let url = URL(string: "\(myPicture.croppedPictrure.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)")!
+        let url = URL(string: "\(myPicture.croppedPicture.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)")!
         dataTask = dataLoader.getImageData(with: url) { result in
             switch result {
             case let .success(data):
@@ -50,23 +50,14 @@ class ImageViewPresenter<Image, View: ImageCellView>: ImageDataDownloader where 
     }
 }
 
-
-class ImageCellViewDecorator<Image, View: ImageCellView>: ImageCellView where Image == View.Image {
-    
-    let imageCellView: View
-    
-    internal init(imageCellView: View) {
-        self.imageCellView = imageCellView
+extension MainQueueDecorator: ImageDataDownloader where View: ImageDataDownloader {
+    func didStartDownloading() {
+        imageCellView.didStartDownloading()
     }
     
-    func display(model: CellImageViewModel<Image>) {
-        
-        guard Thread.isMainThread else {
-            return DispatchQueue.main.async {
-                self.imageCellView.display(model: model)
-            }
-        }
-        
-        self.imageCellView.display(model: model)
+    func didCancelDownloading() {
+        imageCellView.didCancelDownloading()
     }
+    
+    
 }

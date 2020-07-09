@@ -33,6 +33,9 @@
 		082C9C8124B46F2C00EFE33C /* CellImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C8024B46F2C00EFE33C /* CellImageViewController.swift */; };
 		082C9C8324B473B900EFE33C /* ImageViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C8224B473B900EFE33C /* ImageViewPresenter.swift */; };
 		0899DAB824B47A2500A866EB /* ImageResultToControllerAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0899DAB724B47A2500A866EB /* ImageResultToControllerAdapter.swift */; };
+		0899DABA24B705DE00A866EB /* WeakProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0899DAB924B705DE00A866EB /* WeakProxy.swift */; };
+		0899DABC24B7069E00A866EB /* ImageCellViewDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0899DABB24B7069E00A866EB /* ImageCellViewDecorator.swift */; };
+		0899DABE24B7166900A866EB /* CellImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0899DABD24B7166900A866EB /* CellImageViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +80,9 @@
 		082C9C8224B473B900EFE33C /* ImageViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewPresenter.swift; sourceTree = "<group>"; };
 		08999E6024ADF0BC007188F9 /* CoreLogic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreLogic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0899DAB724B47A2500A866EB /* ImageResultToControllerAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResultToControllerAdapter.swift; sourceTree = "<group>"; };
+		0899DAB924B705DE00A866EB /* WeakProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakProxy.swift; sourceTree = "<group>"; };
+		0899DABB24B7069E00A866EB /* ImageCellViewDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCellViewDecorator.swift; sourceTree = "<group>"; };
+		0899DABD24B7166900A866EB /* CellImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellImageViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,13 +129,16 @@
 				0800991024A0C6EC00B482DB /* AppDelegate.swift */,
 				0800991224A0C6EC00B482DB /* SceneDelegate.swift */,
 				0800991424A0C6EC00B482DB /* ViewController.swift */,
+				0899DABD24B7166900A866EB /* CellImageViewModel.swift */,
 				082C9C8024B46F2C00EFE33C /* CellImageViewController.swift */,
 				0800992E24A0DE2600B482DB /* ImageCollectionViewCell.swift */,
 				0800993024A2025C00B482DB /* MoreTableViewController.swift */,
 				0800993224A209C200B482DB /* cell */,
 				0800992C24A0DDB100B482DB /* ImageCollectionViewController.swift */,
 				082C9C8224B473B900EFE33C /* ImageViewPresenter.swift */,
+				0899DABB24B7069E00A866EB /* ImageCellViewDecorator.swift */,
 				0899DAB724B47A2500A866EB /* ImageResultToControllerAdapter.swift */,
+				0899DAB924B705DE00A866EB /* WeakProxy.swift */,
 				082C9C5E24AF381900EFE33C /* ImageFetcher.swift */,
 				082C9C6024AF3B9800EFE33C /* ImageUIComposer.swift */,
 				0800992824A0D03900B482DB /* NavigationBarViewController.swift */,
@@ -282,10 +291,13 @@
 				0800993524A209D600B482DB /* MoreTableViewCell.swift in Sources */,
 				0800992F24A0DE2600B482DB /* ImageCollectionViewCell.swift in Sources */,
 				0800992D24A0DDB100B482DB /* ImageCollectionViewController.swift in Sources */,
+				0899DABA24B705DE00A866EB /* WeakProxy.swift in Sources */,
 				082C9C5F24AF381900EFE33C /* ImageFetcher.swift in Sources */,
 				082C9C8324B473B900EFE33C /* ImageViewPresenter.swift in Sources */,
+				0899DABE24B7166900A866EB /* CellImageViewModel.swift in Sources */,
 				0800992A24A0D03900B482DB /* NavigationBarViewController.swift in Sources */,
 				0800993124A2025C00B482DB /* MoreTableViewController.swift in Sources */,
+				0899DABC24B7069E00A866EB /* ImageCellViewDecorator.swift in Sources */,
 				082C9C8124B46F2C00EFE33C /* CellImageViewController.swift in Sources */,
 				0800991524A0C6EC00B482DB /* ViewController.swift in Sources */,
 				0899DAB824B47A2500A866EB /* ImageResultToControllerAdapter.swift in Sources */,

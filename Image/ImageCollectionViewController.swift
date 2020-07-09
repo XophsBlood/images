@@ -12,7 +12,7 @@ import CoreLogic
 private let reuseIdentifier = "ImageCollectionViewCell"
 
 protocol ImageListView {
-    func display(images: [MyPicture])
+    func display(images: [ImagePictureModel])
 }
 
 class ImageCollectionViewController: UICollectionViewController {

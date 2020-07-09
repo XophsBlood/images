@@ -33,7 +33,10 @@ class ImageFetcher: ImageViewControllerDelegate {
             switch result {
             case let .success(imagesResult):
                 self.images.append(contentsOf: imagesResult.pictures)
-                self.imageListView.display(images: self.images)
+                let models = self.images.map {
+                    ImagePictureModel(croppedPicture: $0.croppedPictrure, id: $0.id)
+                }
+                self.imageListView.display(images: models)
             case let .failure(error):
                 print(error)
             }
@@ -48,7 +51,10 @@ class ImageFetcher: ImageViewControllerDelegate {
             switch result {
             case let .success(imagesResult):
                 self.images.append(contentsOf: imagesResult.pictures)
-                self.imageListView.display(images: self.images)
+                let models = self.images.map {
+                    ImagePictureModel(croppedPicture: $0.croppedPictrure, id: $0.id)
+                }
+                self.imageListView.display(images: models)
             case let .failure(error):
                 print(error)
             }

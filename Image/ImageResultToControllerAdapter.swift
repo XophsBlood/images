@@ -8,8 +8,9 @@
 
 import Foundation
 import CoreLogic
+import UIKit
 
-class ImageResultToControllerAdapter<Image, View: ImageCellView>: ImageListView where Image == View.Image{
+class ImageResultToControllerAdapter<Image, View: ImageCellView>: ImageListView where Image == View.Image, View.Image: UIImage {
     let imageDataLoader: ImageDataLoader
     let viewController: ViewController
     let closure: (Data) -> Image
@@ -20,15 +21,15 @@ class ImageResultToControllerAdapter<Image, View: ImageCellView>: ImageListView 
         self.closure = closure
     }
     
-    func display(images: [MyPicture]) {
+    func display(images: [ImagePictureModel]) {
         let controllers: [CellImageViewController] = images.map {
-            let proxy: CellImageProxy<Image, AnyImageCellView> = CellImageProxy()
-            let anyImageCellView = AnyImageCellView<Image>(proxy)
-            let decorator = ImageCellViewDecorator<Image, AnyImageCellView>(imageCellView: anyImageCellView)
-            let imageDataDownloader = ImageViewPresenter<Image, View>(dataLoader: imageDataLoader, myPicture: $0, imageCellView: decorator as! View, closure: closure)
-            let cell = CellImageViewController(myPicture: $0, imageDataDownloader: imageDataDownloader)
-            let anyController = AnyImageCellView(cell)
-            proxy.imageCellView = anyImageCellView
+            let proxy = WeakProxy<CellImageViewController>()
+            let mainQueueProxy = MainQueueDecorator(imageCellView: proxy)
+            let imageDataDownloader = ImageViewPresenter(dataLoader: imageDataLoader, myPicture: $0, imageCellView: mainQueueProxy, closure: closure)
+            let mainQueueDecorator = MainQueueDecorator(imageCellView: imageDataDownloader)
+            let cell = CellImageViewController(myPicture: $0, imageDataDownloader: mainQueueDecorator)
+            proxy.object = cell
+            
             return cell
         }
         viewController.collectionViewController.displayControllers(controllers: controllers)
@@ -52,15 +53,6 @@ _AnyImageCellViewBox<Base.Image> {
     }
 }
 
-class CellImageProxy<Image, View: ImageCellView>: ImageCellView where Image == View.Image {
-    weak var imageCellView: View?
-    
-    func display(model: CellImageViewModel<Image>) {
-        imageCellView?.display(model: model)
-    }
-
-}
-
 class AnyImageCellView<Image>: ImageCellView {
    private let _box: _AnyImageCellViewBox<Image>
     
@@ -82,7 +74,7 @@ class ImageListViewDecorator: ImageListView {
         self.imageListView = imageListView
     }
     
-    func display(images: [MyPicture]) {
+    func display(images: [ImagePictureModel]) {
         
         guard Thread.isMainThread else {
             return DispatchQueue.main.async {

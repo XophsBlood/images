@@ -10,15 +10,13 @@ import Foundation
 import UIKit
 import CoreLogic
 
-class CellImageViewModel<Image> {
-    let image: Image?
-    let text: String
-    var isLoading = false
+class ImagePictureModel {
+    let croppedPicture: String
+    let id: String
     
-    internal init(image: Image?, text: String, isLoading: Bool) {
-        self.image = image
-        self.text = text
-        self.isLoading = isLoading
+    internal init(croppedPicture: String, id: String) {
+        self.croppedPicture = croppedPicture
+        self.id = id
     }
 }
 
@@ -30,9 +28,9 @@ protocol ImageCellView: AnyObject {
 class CellImageViewController: ImageCellView {
     private var cell: ImageCollectionViewCell?
     let imageViewPresenter: ImageDataDownloader
-    let myPicture: MyPicture?
+    let myPicture: ImagePictureModel?
     
-    init(myPicture: MyPicture, imageDataDownloader: ImageDataDownloader) {
+    init(myPicture: ImagePictureModel, imageDataDownloader: ImageDataDownloader) {
         self.myPicture = myPicture
         self.imageViewPresenter = imageDataDownloader
     }
