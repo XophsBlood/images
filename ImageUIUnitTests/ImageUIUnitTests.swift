@@ -35,7 +35,6 @@ class ImageUIUnitTests: XCTestCase {
     func test_LoadImageFeed_RenderDataOnUI() {
         let (viewController, imagesLoader, _) = makeController()
         
-        
         viewController.collectionViewController.loadViewIfNeeded()
         imagesLoader.finish(with: .success(makeImageResult()), at: 0)
         XCTAssertEqual(2, viewController.collectionViewController.numberOfRenderedFeedImageViews())
@@ -65,7 +64,7 @@ class ImageUIUnitTests: XCTestCase {
     }
     
     func test_LoadImageFeed_isRefreshControl_Animating() {
-        let (viewController, imagesLoader, _) = makeController()
+        let (viewController, _, _) = makeController()
         
         viewController.collectionViewController.loadViewIfNeeded()
         

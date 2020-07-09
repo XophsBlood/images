@@ -11,15 +11,14 @@ import CoreLogic
 
 private let reuseIdentifier = "ImageCollectionViewCell"
 
-protocol ImageListView {
-    func display(images: [ImagePictureModel])
+protocol ModelsToControllerAdapter {
+    func adaptToControllers(images: [ImagePictureModel]) -> ([CellImageViewController])
 }
 
 class ImageCollectionViewController: UICollectionViewController {
     
-    var imageViewControllerDelegate: ImageViewControllerDelegate?
+    var imageViewControllerDelegate: ImagesViewModel<UIImage>?
     var footerView:CustomFooterView?
-    
     
     var controllers: [CellImageViewController] = [] {
         didSet {
@@ -27,19 +26,17 @@ class ImageCollectionViewController: UICollectionViewController {
         }
     }
     
-    var isLoading:Bool = false
-    
     let footerViewReuseIdentifier = "RefreshFooterView"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = UIColor(cgColor: CGColor(srgbRed: 0, green: 20, blue: 140, alpha: 1))
         collectionView.prefetchDataSource = self
-        
+        bind()
         imageViewControllerDelegate?.fetchImages()
         collectionView.refreshControl = UIRefreshControl()
         collectionView.refreshControl?.beginRefreshing()
-        
+
         self.collectionView.register(UINib(nibName: "CustomFooterView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerViewReuseIdentifier)
         
         self.collectionView!.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -75,9 +72,7 @@ class ImageCollectionViewController: UICollectionViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        if isLoading {
-            return CGSize.zero
-        }
+        
         return CGSize(width: collectionView.bounds.size.width, height: 55)
     }
     
@@ -131,16 +126,18 @@ class ImageCollectionViewController: UICollectionViewController {
         let pullHeight  = abs(diffHeight - frameHeight);
         if pullHeight == 0.0 {
             guard let footerView = self.footerView, footerView.isAnimatingFinal else { return }
-            self.isLoading = true
+            
             self.footerView?.startAnimate()
             nextFetch()
         }
     }
     
-    func displayControllers(controllers: [CellImageViewController]) {
-        collectionView.refreshControl?.endRefreshing()
-        collectionView.refreshControl = nil
-        self.controllers = controllers
+    func bind() {
+        imageViewControllerDelegate?.didDownloaded = { result in
+            self.collectionView.refreshControl?.endRefreshing()
+            self.collectionView.refreshControl = nil
+            self.controllers = result
+        }
     }
 }
 

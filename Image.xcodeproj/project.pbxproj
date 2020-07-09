@@ -21,7 +21,7 @@
 		0800993524A209D600B482DB /* MoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0800993324A209D600B482DB /* MoreTableViewCell.swift */; };
 		0800993624A209D600B482DB /* MoreTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0800993424A209D600B482DB /* MoreTableViewCell.xib */; };
 		082C9C5D24ADF29100EFE33C /* CoreLogic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 082C9C5C24ADF29100EFE33C /* CoreLogic.framework */; };
-		082C9C5F24AF381900EFE33C /* ImageFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C5E24AF381900EFE33C /* ImageFetcher.swift */; };
+		082C9C5F24AF381900EFE33C /* ImagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C5E24AF381900EFE33C /* ImagesViewModel.swift */; };
 		082C9C6124AF3B9800EFE33C /* ImageUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C6024AF3B9800EFE33C /* ImageUIComposer.swift */; };
 		082C9C6324B30C7300EFE33C /* CustomFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082C9C6224B30C7300EFE33C /* CustomFooterView.swift */; };
 		082C9C6524B30D5600EFE33C /* CustomFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 082C9C6424B30D5600EFE33C /* CustomFooterView.xib */; };
@@ -65,7 +65,7 @@
 		0800993324A209D600B482DB /* MoreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreTableViewCell.swift; sourceTree = "<group>"; };
 		0800993424A209D600B482DB /* MoreTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoreTableViewCell.xib; sourceTree = "<group>"; };
 		082C9C5C24ADF29100EFE33C /* CoreLogic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreLogic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		082C9C5E24AF381900EFE33C /* ImageFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFetcher.swift; sourceTree = "<group>"; };
+		082C9C5E24AF381900EFE33C /* ImagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesViewModel.swift; sourceTree = "<group>"; };
 		082C9C6024AF3B9800EFE33C /* ImageUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUIComposer.swift; sourceTree = "<group>"; };
 		082C9C6224B30C7300EFE33C /* CustomFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFooterView.swift; sourceTree = "<group>"; };
 		082C9C6424B30D5600EFE33C /* CustomFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFooterView.xib; sourceTree = "<group>"; };
@@ -136,10 +136,10 @@
 				0800993224A209C200B482DB /* cell */,
 				0800992C24A0DDB100B482DB /* ImageCollectionViewController.swift */,
 				082C9C8224B473B900EFE33C /* ImageViewModel.swift */,
+				082C9C5E24AF381900EFE33C /* ImagesViewModel.swift */,
 				0899DABB24B7069E00A866EB /* ImageCellViewDecorator.swift */,
 				0899DAB724B47A2500A866EB /* ImageResultToControllerAdapter.swift */,
 				0899DAB924B705DE00A866EB /* WeakProxy.swift */,
-				082C9C5E24AF381900EFE33C /* ImageFetcher.swift */,
 				082C9C6024AF3B9800EFE33C /* ImageUIComposer.swift */,
 				0800992824A0D03900B482DB /* NavigationBarViewController.swift */,
 				082C9C6224B30C7300EFE33C /* CustomFooterView.swift */,
@@ -292,7 +292,7 @@
 				0800992F24A0DE2600B482DB /* ImageCollectionViewCell.swift in Sources */,
 				0800992D24A0DDB100B482DB /* ImageCollectionViewController.swift in Sources */,
 				0899DABA24B705DE00A866EB /* WeakProxy.swift in Sources */,
-				082C9C5F24AF381900EFE33C /* ImageFetcher.swift in Sources */,
+				082C9C5F24AF381900EFE33C /* ImagesViewModel.swift in Sources */,
 				082C9C8324B473B900EFE33C /* ImageViewModel.swift in Sources */,
 				0899DABE24B7166900A866EB /* CellImageViewModel.swift in Sources */,
 				0800992A24A0D03900B482DB /* NavigationBarViewController.swift in Sources */,

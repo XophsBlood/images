@@ -48,4 +48,22 @@ extension MainQueueDecorator: ImageDataLoader where View == ImageDataLoader {
     }
 }
 
+extension MainQueueDecorator: ImagesLoader where View == ImagesLoader {
+    func getImages(with url: URL, completion: @escaping (Result<ImagesResult, Error>) -> ()) {
+        let complition: (Result<ImagesResult, Error>) -> () = { result in
+            guard Thread.isMainThread else {
+                return DispatchQueue.main.async {
+                    completion(result)
+                }
+            }
+            
+            completion(result)
+        }
+        
+        return imageCellView.getImages(with: url, completion: complition)
+    }
+    
+    
+}
+
 

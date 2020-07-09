@@ -18,8 +18,8 @@ class ImageUIComposer {
         let imageAdapter = ImageResultToControllerAdapter<UIImage> (imageDataLoader: imageDataLoader, viewController: viewController) { data in
             UIImage(data: data)!
         }
-        let decorator = ImageListViewDecorator(imageListView: imageAdapter)
-        imageViewController.imageViewControllerDelegate = ImageFetcher(imagesLoader: imagesLoader, imageListView: decorator)
+        
+        imageViewController.imageViewControllerDelegate = ImagesViewModel(imagesLoader: MainQueueDecorator(imageCellView: imagesLoader), imageListView: imageAdapter)
         viewController.collectionViewController = imageViewController
         
         return viewController

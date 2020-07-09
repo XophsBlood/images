@@ -21,7 +21,6 @@ class WeakProxy<Object: AnyObject> {
 }
 
 extension WeakProxy: ImageCellView where Object: ImageCellView, Object.Image == UIImage {
-    
     func display(model: CellImageViewModel<UIImage>) {
         object?.display(model: model)
     }

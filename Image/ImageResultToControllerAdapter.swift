@@ -10,7 +10,7 @@ import Foundation
 import CoreLogic
 import UIKit
 
-class ImageResultToControllerAdapter<Image>: ImageListView {
+class ImageResultToControllerAdapter<Image>: ModelsToControllerAdapter {
     let imageDataLoader: ImageDataLoader
     let viewController: ViewController
     let closure: (Data) -> UIImage
@@ -21,10 +21,9 @@ class ImageResultToControllerAdapter<Image>: ImageListView {
         self.closure = closure
     }
     
-    func display(images: [ImagePictureModel]) {
+    func adaptToControllers(images: [ImagePictureModel]) -> ([CellImageViewController]) {
         let controllers: [CellImageViewController] = images.map {
             let proxy = WeakProxy<CellImageViewController>()
-            let mainQueueProxy = MainQueueDecorator(imageCellView: proxy)
             let mainQueueLoader = MainQueueDecorator(imageCellView: imageDataLoader)
             let imageDataDownloader = ImageViewModel<UIImage>(dataLoader: mainQueueLoader, myPicture: $0, closure: closure)
     
@@ -33,58 +32,11 @@ class ImageResultToControllerAdapter<Image>: ImageListView {
             
             return cell
         }
-        viewController.collectionViewController.displayControllers(controllers: controllers)
+        return controllers
     }
 }
 
-private class _AnyImageCellViewBox<Image>: ImageCellView {
-    func display(model: CellImageViewModel<Image>) {
-        fatalError()
-    }
-}
 
-private class _ImageCellViewBox<Base: ImageCellView>:
-_AnyImageCellViewBox<Base.Image> {
-    private let _base: Base
-    init(_ base: Base) {
-        _base = base
-    }
-    override func display(model: CellImageViewModel<Image>) {
-        _base.display(model: model)
-    }
-}
-
-class AnyImageCellView<Image>: ImageCellView {
-   private let _box: _AnyImageCellViewBox<Image>
-    
-   init<ImageCellViewType: ImageCellView>(_ mapper: ImageCellViewType)
-      where ImageCellViewType.Image == Image {
-      _box = _ImageCellViewBox(mapper)
-   }
-    
-    func display(model: CellImageViewModel<Image>) {
-        _box.display(model: model)
-    }
-}
-
-class ImageListViewDecorator: ImageListView {
-    
-    let imageListView: ImageListView
-    
-    internal init(imageListView: ImageListView) {
-        self.imageListView = imageListView
-    }
-    
-    func display(images: [ImagePictureModel]) {
-        
-        guard Thread.isMainThread else {
-            return DispatchQueue.main.async {
-                self.imageListView.display(images: images)
-            }        }
-        
-        self.imageListView.display(images: images)
-    }
-}
 
 
 

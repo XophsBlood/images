@@ -14,15 +14,17 @@ protocol ImageViewControllerDelegate {
     func nextFetch()
 }
 
-class ImageFetcher: ImageViewControllerDelegate {
+class ImagesViewModel<Image>: ImageViewControllerDelegate {
     
     let imagesLoader: ImagesLoader
-    let imageListView: ImageListView
+    var imageListView: ModelsToControllerAdapter
     let url = URL(string: "http://195.39.233.28:8035/images")!
     var pageCount = 0
-    var images: [MyPicture] = []
+    private var images: [MyPicture] = []
+    var didDownloaded: (([CellImageViewController]) -> ())?
     
-    internal init(imagesLoader: ImagesLoader, imageListView: ImageListView) {
+    
+    internal init(imagesLoader: ImagesLoader, imageListView: ModelsToControllerAdapter) {
         self.imageListView = imageListView
         self.imagesLoader = imagesLoader
     }
@@ -36,12 +38,15 @@ class ImageFetcher: ImageViewControllerDelegate {
                 let models = self.images.map {
                     ImagePictureModel(croppedPicture: $0.croppedPictrure, id: $0.id)
                 }
-                self.imageListView.display(images: models)
+                
+                self.didDownloaded?(self.imageListView.adaptToControllers(images: models))
             case let .failure(error):
                 print(error)
             }
         }
     }
+    
+    
     
     @objc func nextFetch() {
         pageCount += 1
@@ -54,7 +59,7 @@ class ImageFetcher: ImageViewControllerDelegate {
                 let models = self.images.map {
                     ImagePictureModel(croppedPicture: $0.croppedPictrure, id: $0.id)
                 }
-                self.imageListView.display(images: models)
+                self.didDownloaded?(self.imageListView.adaptToControllers(images: models))
             case let .failure(error):
                 print(error)
             }
