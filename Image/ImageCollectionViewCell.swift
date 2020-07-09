@@ -10,6 +10,12 @@ import UIKit
 
 
 class ImageCollectionViewCell: UICollectionViewCell {
+    
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
+    }()
    
     let newsTextLabel: UILabel = {
         let label = UILabel()
@@ -54,6 +60,10 @@ class ImageCollectionViewCell: UICollectionViewCell {
         newsImageView.bottomAnchor.constraint(equalTo: newsTextLabel.bottomAnchor, constant: -20).isActive = true
         newsImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
         
+        addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0).isActive = true
     }
     
     override func prepareForReuse() {

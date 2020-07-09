@@ -12,6 +12,7 @@ import UIKit
 class CustomFooterView : UICollectionReusableView {
    
     @IBOutlet weak var refreshControlIndicator: UIActivityIndicatorView!
+    
     var isAnimatingFinal:Bool = false
     var currentTransform:CGAffineTransform?
  
@@ -28,11 +29,11 @@ class CustomFooterView : UICollectionReusableView {
         if isAnimatingFinal {
             return
         }
+        
         self.currentTransform = inTransform
         self.refreshControlIndicator?.transform = CGAffineTransform.init(scaleX: scaleFactor, y: scaleFactor)
     }
     
-    //reset the animation
     func prepareInitialAnimation() {
         self.isAnimatingFinal = false
         self.refreshControlIndicator?.stopAnimating()
@@ -49,12 +50,13 @@ class CustomFooterView : UICollectionReusableView {
         self.refreshControlIndicator?.stopAnimating()
     }
     
-    //final animation to display loading
     func animateFinal() {
         if isAnimatingFinal {
             return
         }
+        
         self.isAnimatingFinal = true
+        
         UIView.animate(withDuration: 0.2) {
             self.refreshControlIndicator?.transform = CGAffineTransform.identity
         }

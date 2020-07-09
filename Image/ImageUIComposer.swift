@@ -11,18 +11,16 @@ import CoreLogic
 import UIKit
 
 class ImageUIComposer {
-    static func makeViewController() -> ViewController {
-        let session = URLSession(configuration: .default)
+    static func makeViewController(imagesLoader: ImagesLoader, imageDataLoader: ImageDataLoader) -> ViewController {
         let imageViewController = ImageCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        let networkManager = NetworkManager(session: session)
-        let tokenLoader = HTTPTokenLoader(httpCLient: networkManager)
-        let authClient = AuthHTTPClient(networkManager: networkManager, tokenLoader: tokenLoader)
-        let imagesLoader = HTTPImagesLoader(httpCLient: authClient)
-        imageViewController.imageViewControllerDelegate = ImageFetcher(imagesLoader: imagesLoader, imageListView: imageViewController)
         let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
         let viewController = storyBoard.instantiateInitialViewController() as! ViewController
+        let imageAdapter = ImageResultToControllerAdapter<UIImage, CellImageViewController> (imageDataLoader: imageDataLoader, viewController: viewController) { data in
+            UIImage(data: data)!
+        }
+        let decorator = ImageListViewDecorator(imageListView: imageAdapter)
+        imageViewController.imageViewControllerDelegate = ImageFetcher(imagesLoader: imagesLoader, imageListView: decorator)
         viewController.collectionViewController = imageViewController
-        
         
         return viewController
     }

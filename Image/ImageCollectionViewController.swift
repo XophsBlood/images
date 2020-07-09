@@ -9,7 +9,7 @@
 import UIKit
 import CoreLogic
 
-private let reuseIdentifier = "Cell"
+private let reuseIdentifier = "ImageCollectionViewCell"
 
 protocol ImageListView {
     func display(images: [MyPicture])
@@ -20,9 +20,12 @@ class ImageCollectionViewController: UICollectionViewController {
     var imageViewControllerDelegate: ImageViewControllerDelegate?
     var footerView:CustomFooterView?
     
-    var images: [MyPicture] = []
-    var imagesData: [Int: Data] = [:]
-    var currentPages: Int = 0
+    var controllers: [CellImageViewController] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
     var isLoading:Bool = false
     
     let footerViewReuseIdentifier = "RefreshFooterView"
@@ -30,11 +33,11 @@ class ImageCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = UIColor(cgColor: CGColor(srgbRed: 0, green: 20, blue: 140, alpha: 1))
-        currentPages = 0
-        imagesData = [:]
+        collectionView.prefetchDataSource = self
         
         imageViewControllerDelegate?.fetchImages()
-        
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.beginRefreshing()
         
         self.collectionView.register(UINib(nibName: "CustomFooterView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerViewReuseIdentifier)
         
@@ -49,47 +52,17 @@ class ImageCollectionViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return controllers.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ImageCollectionViewCell
+        let cell = controllers[indexPath.row].createCell(collectionView: collectionView, indexPath: indexPath)
         
-        if let data = imagesData[indexPath.row] {
-            cell.newsImageView.image = UIImage(data: data)
-            cell.newsImageView.activityIndicator.stopAnimating()
-        } else {
-            cell.newsImageView.activityIndicator.startAnimating()
-            downloadImageData(url: images[indexPath.row].croppedPictrure, index: indexPath.row)
-        }
-        
-        cell.newsTextLabel.text = images[indexPath.row].id
         return cell
     }
     
     @objc func nextFetch() {
-        print("fetch")
         imageViewControllerDelegate?.nextFetch()
-    }
-    
-    func downloadImageData(url: String, index: Int) {
-        let session = URLSession(configuration: .default)
-        let networkManager = NetworkManager(session: session)
-        let imageDataLoader = HTTPImageDataLoader(httpCLient: networkManager)
-        let url = URL(string: "\(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)")!
-        imageDataLoader.getImageData(with: url) { result in
-            switch result {
-            case let .success(data):
-                self.imagesData[index] = data
-                DispatchQueue.main.async {
-                    
-                    self.collectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
-                }
-            case let .failure(error):
-                print(error)
-            }
-            
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -162,6 +135,26 @@ class ImageCollectionViewController: UICollectionViewController {
             nextFetch()
         }
     }
+    
+    func displayControllers(controllers: [CellImageViewController]) {
+        collectionView.refreshControl?.endRefreshing()
+        collectionView.refreshControl = nil
+        self.controllers = controllers
+    }
+}
+
+extension ImageCollectionViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for item in indexPaths {
+            controllers[item.row].prefetch()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        for item in indexPaths {
+            controllers[item.row].cancel()
+        }
+    }
 }
 
 
@@ -174,27 +167,4 @@ extension ImageCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension ImageCollectionViewController: ImageListView {
-    func display(images: [MyPicture]) {
-        self.images = images
-        DispatchQueue.main.async {
-            self.isLoading = false
-            self.collectionView.reloadData()
-        }
-    }
-}
 
-extension UIImageView {
-    var activityIndicator: UIActivityIndicatorView {
-      get {
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.hidesWhenStopped = true
-        self.addSubview(activityIndicator)
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
-        activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0).isActive = true
-        activityIndicator.stopAnimating()
-        return activityIndicator
-      }
-    }
-}
