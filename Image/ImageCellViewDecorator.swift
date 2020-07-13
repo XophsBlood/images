@@ -33,7 +33,7 @@ extension MainQueueDecorator: ImageCellView where View:ImageCellView, View.Image
 }
 
 extension MainQueueDecorator: ImageDataLoader where View == ImageDataLoader {
-    func getImageData(with url: URL, completion: @escaping (Result<Data, Error>) -> ()) -> URLSessionDataTaskProtocol {
+    func getImageData(with url: URL, completion: @escaping (Result<Data, Error>) -> ()) -> URLSessionDataTaskProtocol? {
         let complition: (Result<Data, Error>) -> () = { result in
             guard Thread.isMainThread else {
                 return DispatchQueue.main.async {

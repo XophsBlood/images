@@ -19,7 +19,7 @@ class StubImageDataLoader: ImageDataLoader {
         return arrayCompl.map { $0.url }
     }
     
-    func getImageData(with url: URL, completion: @escaping (Result<Data, Error>) -> ()) -> URLSessionDataTaskProtocol{
+    func getImageData(with url: URL, completion: @escaping (Result<Data, Error>) -> ()) -> URLSessionDataTaskProtocol?{
         count += 1
         arrayCompl.append((url, completion))
         return MockURLSessionDataTask()

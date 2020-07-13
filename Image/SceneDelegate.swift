@@ -24,10 +24,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let networkManager = NetworkManager(session: session)
         let tokenLoader = HTTPTokenLoader(httpCLient: networkManager)
         let authClient = AuthHTTPClient(networkManager: networkManager, tokenLoader: tokenLoader)
-        let imagesLoader = HTTPImagesLoader(httpCLient: authClient)
-        let imageDataLoader = HTTPImageDataLoader(httpCLient: networkManager)
+        
+        let store = Store()
+        let localImageDataLoader = LocalImageDataLoader(store: store)
+        let imagesLoader = HTTPImagesLoader(httpCLient: authClient, localImageDataLoader: localImageDataLoader)
+        let alwaysFail = AlwaysFail()
+        let imagesFeedLoaderCompositor = ImagesFeedLoaderCompositor(imagesLoader: alwaysFail, localImageDataLoader: localImageDataLoader)
+        let imageDataLoader = HTTPImageDataLoader(httpCLient: networkManager, localImageDataLoader: localImageDataLoader)
+        let imageDataLoaderCompositor = ImageDataLoaderCompositor(imageDataLoader: imageDataLoader, localImageDataLoader: localImageDataLoader)
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = ImageUIComposer.makeViewController(imagesLoader: imagesLoader, imageDataLoader: imageDataLoader)
+        window?.rootViewController = ImageUIComposer.makeViewController(imagesLoader: imagesFeedLoaderCompositor, imageDataLoader: imageDataLoaderCompositor)
         window?.makeKeyAndVisible()
     }
 

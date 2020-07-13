@@ -33,9 +33,10 @@ class ImageCollectionViewController: UICollectionViewController {
         collectionView.backgroundColor = UIColor(cgColor: CGColor(srgbRed: 0, green: 20, blue: 140, alpha: 1))
         collectionView.prefetchDataSource = self
         bind()
-        imageViewControllerDelegate?.fetchImages()
         collectionView.refreshControl = UIRefreshControl()
         collectionView.refreshControl?.beginRefreshing()
+        imageViewControllerDelegate?.fetchImages()
+        
 
         self.collectionView.register(UINib(nibName: "CustomFooterView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerViewReuseIdentifier)
         

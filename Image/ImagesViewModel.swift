@@ -30,6 +30,7 @@ class ImagesViewModel<Image>: ImageViewControllerDelegate {
     }
     
     func fetchImages() {
+        print(url.scheme)
         pageCount += 1
         imagesLoader.getImages(with: url) { result in
             switch result {
@@ -41,7 +42,7 @@ class ImagesViewModel<Image>: ImageViewControllerDelegate {
                 
                 self.didDownloaded?(self.imageListView.adaptToControllers(images: models))
             case let .failure(error):
-                print(error)
+                break
             }
         }
     }
