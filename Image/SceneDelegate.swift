@@ -29,11 +29,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let localImageDataLoader = LocalImageDataLoader(store: store)
         let imagesLoader = HTTPImagesLoader(httpCLient: authClient, localImageDataLoader: localImageDataLoader)
         let alwaysFail = AlwaysFail()
-        let imagesFeedLoaderCompositor = ImagesFeedLoaderCompositor(imagesLoader: imagesLoader, localImageDataLoader: localImageDataLoader)
+        
+        let imagesFeedLoaderDecorator = ImagesFeedLoaderDecorator(imagesLoader: imagesLoader, localImageDataLoader: localImageDataLoader)
+        let imagesFeedCompositor = ImagesFeedCompositor(imagesLoader: imagesLoader, localImageDataLoader: imagesFeedLoaderDecorator)
         let imageDataLoader = HTTPImageDataLoader(httpCLient: networkManager, localImageDataLoader: localImageDataLoader)
-        let imageDataLoaderCompositor = ImageDataLoaderCompositor(imageDataLoader: imageDataLoader, localImageDataLoader: localImageDataLoader)
+        let imageDataLoaderDecorator = ImageDataLoaderDecorator(imageDataLoader: imageDataLoader, localImageDataLoader: localImageDataLoader)
+        let imageDataCompositor = ImageDataCompositor(imageDataLoader: imageDataLoader, localImageDataLoader: imageDataLoaderDecorator)
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = ImageUIComposer.makeViewController(imagesLoader: imagesFeedLoaderCompositor, imageDataLoader: imageDataLoaderCompositor)
+        window?.rootViewController = ImageUIComposer.makeViewController(imagesLoader: imagesFeedCompositor, imageDataLoader: imageDataCompositor)
         window?.makeKeyAndVisible()
     }
 
