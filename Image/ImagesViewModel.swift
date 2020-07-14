@@ -62,7 +62,7 @@ class ImagesViewModel<Image>: ImageViewControllerDelegate {
                 }
                 self.didDownloaded?(self.imageListView.adaptToControllers(images: models))
             case let .failure(error):
-                print(error)
+                break
             }
         }
     }

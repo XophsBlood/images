@@ -29,7 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let localImageDataLoader = LocalImageDataLoader(store: store)
         let imagesLoader = HTTPImagesLoader(httpCLient: authClient, localImageDataLoader: localImageDataLoader)
         let alwaysFail = AlwaysFail()
-        
         let imagesFeedLoaderDecorator = ImagesFeedLoaderDecorator(imagesLoader: imagesLoader, localImageDataLoader: localImageDataLoader)
         let imagesFeedCompositor = ImagesFeedCompositor(imagesLoader: imagesLoader, localImageDataLoader: imagesFeedLoaderDecorator)
         let imageDataLoader = HTTPImageDataLoader(httpCLient: networkManager, localImageDataLoader: localImageDataLoader)
